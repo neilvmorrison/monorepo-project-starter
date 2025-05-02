@@ -1,0 +1,21 @@
+{
+  "name": "your-project",
+  "private": true,
+  "scripts": {
+    "dev:backend": "pnpm --filter backend dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "backend:generate-resource": "pnpm --filter backend generate:resource"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "frontend": "2.0.0-alpha.4",
+    "lucide-react": "^0.486.0"
+  }
+}
