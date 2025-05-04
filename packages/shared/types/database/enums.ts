@@ -1,5 +1,4 @@
-export enum MESSAGE_ROLE {
+export enum USER_ROLE {
   USER = "user",
-  ASSISTANT = "assistant",
-  SYSTEM = "system",
+  ADMIN = "admin",
 }
