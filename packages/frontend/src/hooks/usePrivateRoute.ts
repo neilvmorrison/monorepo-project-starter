@@ -12,5 +12,9 @@ export default function usePrivateRoute() {
     }
   }, [currentUser, isLoading, isError, navigate]);
 
-  return { isAuthenticated: !!currentUser, isLoading };
+  return {
+    isAuthenticated: !!currentUser,
+    isLoading,
+    user_profile: currentUser?.user_profile,
+  };
 }

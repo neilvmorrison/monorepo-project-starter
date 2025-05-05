@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import apiHandler from "../lib/fetch";
-import { UserProfile } from "shared/types";
+import { CurrentUser } from "shared/types";
 
 async function fetchCurrentUser() {
-  const { data, error } = await apiHandler<UserProfile>("/api/auth/current");
-  console.log(data, error);
+  const { data, error } = await apiHandler<CurrentUser>("/api/auth/current");
   if (error) throw error;
   return data;
 }
@@ -20,7 +19,7 @@ export default function useCurrentUser() {
   });
 
   return {
-    currentUser: currentUser ?? null,
+    currentUser,
     isLoading,
     isError,
   };
