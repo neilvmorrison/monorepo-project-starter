@@ -14,6 +14,12 @@ importers:
 
   packages/design-system:
     dependencies:
+      '@storybook/manager-api':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12)
+      '@storybook/theming':
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.12)
       react:
         specifier: ^19.1.0
         version: 19.1.0
