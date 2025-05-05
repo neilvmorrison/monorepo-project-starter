@@ -23,7 +23,6 @@ auth_router.get("/", async (ctx: Context) => {
 
 auth_router.post("/login", async (ctx: Context) => {
   const body = ctx.request.body as LoginPayload;
-  console.log(body);
   const { data, error } = await tryCatch<LoginReturn, UnauthorizedError>(
     auth_service.loginUser(body.email, body.password)
   );

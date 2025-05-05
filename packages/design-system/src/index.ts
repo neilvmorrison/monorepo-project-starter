@@ -1,5 +1,11 @@
+// Import and export CSS
+import "./index.css";
+
 // Export all components
 export * from "./components/button";
+export * from "./components/accordion";
+export * from "./components/surface";
+export * from "./components/text";
 
 // Export theme
 export * from "./theme";

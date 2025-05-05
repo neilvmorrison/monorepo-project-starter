@@ -22,9 +22,17 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         },
+        assetFileNames: "assets/[name][extname]",
       },
     },
     sourcemap: true,
     minify: true,
+    cssCodeSplit: true,
+  },
+  css: {
+    modules: {
+      localsConvention: "camelCase",
+      generateScopedName: "[name]__[local]___[hash:base64:5]",
+    },
   },
 });

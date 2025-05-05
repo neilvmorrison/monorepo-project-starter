@@ -2,9 +2,9 @@ import { useState } from "react";
 import apiHandler from "../../lib/fetch";
 import useForm from "../../hooks/useForm";
 import { Alert } from "../../components/alert";
-import { Card } from "../../components/card";
 import { FormInput } from "../../components/form/FormInput";
 import { useNavigate } from "react-router";
+import { Button, Surface } from "design-system";
 
 export default function AuthRoute() {
   const navigate = useNavigate();
@@ -74,20 +74,25 @@ export default function AuthRoute() {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Card className="min-w-[400px]">
-        <div className="flex justify-between mb-6">
+      <Surface
+        className="w-full max-w-md mx-4 p-6"
+        radius="medium"
+        elevation="small"
+      >
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
           <h1 className="text-2xl font-bold">
             {isLogin ? "Login" : "Register"}
           </h1>
-          <button
-            className="text-blue-600 hover:text-blue-700"
+          <Button
+            variant="ghost"
+            size="small"
             onClick={() => {
               setIsLogin(!isLogin);
               setError(null);
             }}
           >
             {isLogin ? "Need an account?" : "Already have an account?"}
-          </button>
+          </Button>
         </div>
 
         {error && (
@@ -124,12 +129,12 @@ export default function AuthRoute() {
                 onChange={(value) => loginForm.setValue("password", value)}
               />
             </div>
-            <button
+            <Button
               type="submit"
               className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
               {isLoading ? "Loading" : "Login"}
-            </button>
+            </Button>
           </form>
         ) : (
           <form onSubmit={handleRegisterSubmit}>
@@ -166,15 +171,12 @@ export default function AuthRoute() {
                 onChange={(value) => registerForm.setValue("password", value)}
               />
             </div>
-            <button
-              type="submit"
-              className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
+            <Button type="submit" className="w-full">
               {isLoading ? "Loading" : "Register"}
-            </button>
+            </Button>
           </form>
         )}
-      </Card>
+      </Surface>
     </div>
   );
 }
