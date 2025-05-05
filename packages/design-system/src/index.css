@@ -62,10 +62,12 @@ select {
   --space-16: 4rem; /* 64px */
   --space-20: 5rem; /* 80px */
   /* Typography */
+  --font-size-xs: 0.75rem; /* 12px */
   --font-size-sm: 0.875rem; /* 14px */
   --font-size-md: 1rem; /* 16px */
   --font-size-lg: 1.125rem; /* 18px */
   --font-size-xl: 1.25rem; /* 20px */
+  --font-size-xxl: 1.5rem; /* 24px */
   --font-size-h1: 2.25rem; /* 36px */
   --font-size-h2: 2rem; /* 32px */
   --font-size-h3: 1.75rem; /* 28px */
@@ -708,6 +710,9 @@ p {
 }
 
 /* Typography Classes */
+.text-xs {
+  font-size: var(--font-size-xs);
+}
 .text-sm {
   font-size: var(--font-size-sm);
 }
@@ -719,6 +724,9 @@ p {
 }
 .text-xl {
   font-size: var(--font-size-xl);
+}
+.text-xxl {
+  font-size: var(--font-size-xxl);
 }
 .text-h1 {
   font-size: var(--font-size-h1);

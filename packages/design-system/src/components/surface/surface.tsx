@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import { forwardRef } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 import styles from "./surface.module.css";
 

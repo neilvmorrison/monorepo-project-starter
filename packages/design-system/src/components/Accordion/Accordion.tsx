@@ -7,9 +7,9 @@ import {
   useRef,
   useEffect,
 } from "react";
-import { useSpring, animated, a } from "@react-spring/web";
+import { useSpring, animated } from "@react-spring/web";
 import Surface from "../surface";
-import styles from "./Accordion.module.css";
+import styles from "./accordion.module.css";
 
 interface AccordionContextType {
   expanded: string[];
@@ -147,7 +147,6 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
             </svg>
           </span>
         </button>
-
         <AnimatedDiv
           id={`accordion-content-${id}`}
           role="region"
@@ -156,12 +155,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           style={springProps}
         >
           <div ref={contentRef} className={styles.panelInner}>
-            <Surface
-              variant="outlined"
-              radius="small"
-              className="p-4"
-              // style={{ marginTop: -1 }}
-            >
+            <Surface variant="outlined" radius="small" className="p-4">
               {children}
             </Surface>
           </div>
