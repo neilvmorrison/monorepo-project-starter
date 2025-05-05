@@ -1,14 +1,15 @@
 {
-  "name": "your-project",
+  "name": "pnpm-monorepo-starter",
   "private": true,
+  "version": "0.0.1",
   "scripts": {
-    "dev:backend": "pnpm --filter backend dev",
-    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:server": "pnpm --filter server dev",
+    "dev:client": "pnpm --filter web-client dev",
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
-    "backend:generate-resource": "pnpm --filter backend generate:resource",
-    "backend:add": "pnpm --filter backend add",
-    "frontend:add": "pnpm --filter frontend add"
+    "server:generate-resource": "pnpm --filter server generate:resource",
+    "server:add": "pnpm --filter server add",
+    "client:add": "pnpm --filter web-client add"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
