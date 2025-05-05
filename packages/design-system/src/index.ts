@@ -1,6 +1,5 @@
 // Export all components
-export * from "./components";
-export { default as Button } from "./components/Button/Button";
+export * from "./components/button";
 
 // Export theme
 export * from "./theme";

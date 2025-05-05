@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Button from "./Button";
+import { Button } from "./Button";
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "Components/Button",
   component: Button,
   parameters: {
@@ -10,51 +10,47 @@ const meta: Meta<typeof Button> = {
   tags: ["autodocs"],
   argTypes: {
     variant: {
-      control: "select",
-      options: ["primary", "secondary", "outline", "text"],
+      control: { type: "select" },
+      options: ["primary", "secondary", "outline", "ghost"],
     },
     size: {
-      control: "select",
+      control: { type: "select" },
       options: ["small", "medium", "large"],
     },
-    fullWidth: {
-      control: "boolean",
-    },
-    disabled: {
-      control: "boolean",
-    },
-    onClick: { action: "clicked" },
+    disabled: { control: "boolean" },
+    isLoading: { control: "boolean" },
+    fullWidth: { control: "boolean" },
   },
-};
+} satisfies Meta<typeof Button>;
 
 export default meta;
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
     variant: "primary",
-    children: "Primary Button",
+    children: "Button",
   },
 };
 
 export const Secondary: Story = {
   args: {
     variant: "secondary",
-    children: "Secondary Button",
+    children: "Button",
   },
 };
 
 export const Outline: Story = {
   args: {
     variant: "outline",
-    children: "Outline Button",
+    children: "Button",
   },
 };
 
-export const Text: Story = {
+export const Ghost: Story = {
   args: {
-    variant: "text",
-    children: "Text Button",
+    variant: "ghost",
+    children: "Button",
   },
 };
 
@@ -76,6 +72,13 @@ export const Large: Story = {
   args: {
     size: "large",
     children: "Large Button",
+  },
+};
+
+export const Loading: Story = {
+  args: {
+    isLoading: true,
+    children: "Loading Button",
   },
 };
 

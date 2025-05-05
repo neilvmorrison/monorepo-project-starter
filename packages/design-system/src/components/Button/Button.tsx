@@ -1,138 +1,103 @@
-import React from "react";
-import { colors, spacing, typography } from "../../theme";
+import type { ButtonHTMLAttributes, ReactNode } from "react";
+import { forwardRef } from "react";
+import styles from "./button.module.css";
 
-export type ButtonVariant = "primary" | "secondary" | "outline" | "text";
+export type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 export type ButtonSize = "small" | "medium" | "large";
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  /**
+   * The visual style of the button
+   * @default 'primary'
+   */
   variant?: ButtonVariant;
+
+  /**
+   * The size of the button
+   * @default 'medium'
+   */
   size?: ButtonSize;
-  startIcon?: React.ReactNode;
-  endIcon?: React.ReactNode;
+
+  /**
+   * Whether the button should render at full width
+   * @default false
+   */
   fullWidth?: boolean;
-  children: React.ReactNode;
+
+  /**
+   * Icon to display before button text
+   */
+  iconLeft?: ReactNode;
+
+  /**
+   * Icon to display after button text
+   */
+  iconRight?: ReactNode;
+
+  /**
+   * Whether the button is in a loading state
+   * @default false
+   */
+  isLoading?: boolean;
+
+  /**
+   * Button contents
+   */
+  children?: ReactNode;
+
+  /**
+   * Additional CSS classes to apply to the button
+   */
+  className?: string;
 }
 
-const getVariantStyles = (variant: ButtonVariant) => {
-  switch (variant) {
-    case "primary":
-      return {
-        backgroundColor: colors.primary.main,
-        color: "white",
-        border: "none",
-        ":hover": {
-          backgroundColor: colors.primary.dark,
-        },
-      };
-    case "secondary":
-      return {
-        backgroundColor: colors.secondary.main,
-        color: "white",
-        border: "none",
-        ":hover": {
-          backgroundColor: colors.secondary.dark,
-        },
-      };
-    case "outline":
-      return {
-        backgroundColor: "transparent",
-        color: colors.primary.main,
-        border: `1px solid ${colors.primary.main}`,
-        ":hover": {
-          backgroundColor: colors.gray[100],
-        },
-      };
-    case "text":
-      return {
-        backgroundColor: "transparent",
-        color: colors.primary.main,
-        border: "none",
-        ":hover": {
-          backgroundColor: colors.gray[100],
-        },
-      };
-    default:
-      return {};
-  }
-};
-
-const getSizeStyles = (size: ButtonSize) => {
-  switch (size) {
-    case "small":
-      return {
-        padding: `${spacing[1]} ${spacing[2]}`,
-        fontSize: typography.fontSize.sm,
-      };
-    case "medium":
-      return {
-        padding: `${spacing[2]} ${spacing[4]}`,
-        fontSize: typography.fontSize.base,
-      };
-    case "large":
-      return {
-        padding: `${spacing[3]} ${spacing[6]}`,
-        fontSize: typography.fontSize.lg,
-      };
-    default:
-      return {};
-  }
-};
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
       variant = "primary",
       size = "medium",
-      startIcon,
-      endIcon,
-      fullWidth,
+      fullWidth = false,
+      iconLeft,
+      iconRight,
+      isLoading = false,
       children,
-      style,
+      className = "",
+      disabled,
       ...props
     },
     ref
   ) => {
-    const baseStyles = {
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      borderRadius: "0.375rem",
-      fontWeight: typography.fontWeight.medium,
-      cursor: "pointer",
-      transition: "background-color 0.2s, box-shadow 0.2s",
-      width: fullWidth ? "100%" : "auto",
-      ":focus": {
-        outline: "none",
-        boxShadow: `0 0 0 3px ${colors.primary.light}50`,
-      },
-      ":disabled": {
-        opacity: 0.6,
-        cursor: "not-allowed",
-      },
-    };
+    // Combine utility classes from index.css with component-specific styles
+    const buttonClasses = [
+      styles.button,
+      styles[variant],
+      styles[size],
+      fullWidth ? styles.fullWidth : "",
+      isLoading ? styles.loading : "",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
 
-    const variantStyles = getVariantStyles(variant);
-    const sizeStyles = getSizeStyles(size);
-
-    const combinedStyles = {
-      ...baseStyles,
-      ...variantStyles,
-      ...sizeStyles,
-      ...style,
-    };
+    const isDisabled = disabled || isLoading;
 
     return (
       <button
         ref={ref}
-        style={combinedStyles as React.CSSProperties}
+        className={buttonClasses}
+        disabled={isDisabled}
+        type={props.type || "button"}
         {...props}
       >
-        {startIcon && (
-          <span style={{ marginRight: spacing[2] }}>{startIcon}</span>
+        {iconLeft && !isLoading && (
+          <span className={styles.iconLeft}>{iconLeft}</span>
         )}
+
         {children}
-        {endIcon && <span style={{ marginLeft: spacing[2] }}>{endIcon}</span>}
+
+        {iconRight && !isLoading && (
+          <span className={styles.iconRight}>{iconRight}</span>
+        )}
       </button>
     );
   }

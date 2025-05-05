@@ -1,0 +1,142 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--border-radius);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-duration) ease-in-out;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  color: var(--text);
+}
+
+/* Button sizes */
+.small {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  min-height: 32px;
+}
+
+.medium {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-md);
+  min-height: 40px;
+}
+
+.large {
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--font-size-lg);
+  min-height: 48px;
+}
+
+/* Button variants */
+.primary {
+  background-color: var(--primary);
+  color: white;
+}
+
+.primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+.primary:focus-visible {
+  box-shadow: var(--input-focus-shadow);
+  outline: none;
+}
+
+.secondary {
+  background-color: var(--secondary);
+  color: var(--text);
+}
+
+.secondary:hover:not(:disabled) {
+  background-color: var(--secondary-hover);
+}
+
+.secondary:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+}
+
+.outline:hover:not(:disabled) {
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+.outline:focus-visible {
+  box-shadow: var(--input-focus-shadow);
+  outline: none;
+}
+
+.ghost {
+  background-color: transparent;
+  color: var(--text);
+}
+
+.ghost:hover:not(:disabled) {
+  background-color: var(--secondary);
+}
+
+.ghost:focus-visible {
+  box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+/* Button states */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Button with icon */
+.iconLeft {
+  margin-right: var(--space-2);
+}
+
+.iconRight {
+  margin-left: var(--space-2);
+}
+
+.iconOnly {
+  padding: var(--space-2);
+  aspect-ratio: 1 / 1;
+}
+
+/* Button with loading state */
+.loading {
+  position: relative;
+  color: transparent;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  margin: -0.5rem 0 0 -0.5rem;
+  border: 2px solid #fff;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: button-spinner 0.8s linear infinite;
+}
+
+@keyframes button-spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Full width button */
+.fullWidth {
+  width: 100%;
+}
