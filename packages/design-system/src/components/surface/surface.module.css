@@ -1,0 +1,75 @@
+.surface {
+  position: relative;
+  box-sizing: border-box;
+  transition: all var(--transition-duration) ease-in-out;
+  color: var(--text);
+  background-color: var(--card-background);
+}
+
+/* Surface variants */
+.variant-default {
+  border: none;
+}
+
+.variant-elevated {
+  border: none;
+}
+
+.variant-outlined {
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+}
+
+/* Border radius variants */
+.radius-none {
+  border-radius: 0;
+}
+
+.radius-small {
+  border-radius: calc(var(--border-radius) * 0.5);
+}
+
+.radius-medium {
+  border-radius: var(--border-radius);
+}
+
+.radius-large {
+  border-radius: calc(var(--border-radius) * 2);
+}
+
+.radius-full {
+  border-radius: 9999px;
+}
+
+/* Elevation variants (shadows) */
+.elevation-none {
+  box-shadow: none;
+}
+
+.elevation-low {
+  box-shadow: var(--shadow-sm);
+}
+
+.elevation-medium {
+  box-shadow: var(--shadow);
+}
+
+.elevation-high {
+  box-shadow: var(--shadow-lg);
+}
+
+/* High contrast mode */
+.highContrast {
+  background-color: var(--surface-background);
+}
+
+/* Ensure text is readable in all color modes */
+@media (prefers-color-scheme: dark) {
+  .surface:not(.variant-outlined) {
+    color: var(--text);
+  }
+
+  .variant-outlined {
+    border-color: var(--border-color);
+  }
+}
