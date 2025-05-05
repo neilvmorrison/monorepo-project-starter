@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import apiHandler from "../lib/fetch";
 import { CurrentUser } from "shared/types";
 
@@ -8,7 +8,16 @@ async function fetchCurrentUser() {
   return data;
 }
 
+async function logOut() {
+  const { error } = await apiHandler<void>("/api/auth/logout", {
+    method: "POST",
+  });
+  if (error) throw error;
+  return;
+}
+
 export default function useCurrentUser() {
+  const qc = useQueryClient();
   const {
     data: currentUser,
     isLoading,
@@ -18,9 +27,17 @@ export default function useCurrentUser() {
     queryFn: async () => fetchCurrentUser(),
   });
 
+  const { mutateAsync: logOutUser, isPending } = useMutation({
+    mutationFn: logOut,
+    onSuccess: () => {
+      qc.refetchQueries({ queryKey: ["current_user"] });
+    },
+  });
+
   return {
     currentUser,
-    isLoading,
+    isLoading: isLoading || isPending,
     isError,
+    logOutUser,
   };
 }
