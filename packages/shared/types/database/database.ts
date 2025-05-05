@@ -1,16 +1,10 @@
 import { AuthUser, InsertAuthUser, UpdateAuthUser } from "./auth_users.types";
+import { BaseRecord } from "./base_record.types";
 import {
   InsertUserProfile,
   UpdateUserProfile,
   UserProfile,
 } from "./user_profiles.types";
-
-export interface BaseRecord {
-  id: string;
-  created_at: Date;
-  updated_at: Date;
-  deleted_at: Date | null;
-}
 
 export interface AuthUsersTable {
   row: AuthUser;

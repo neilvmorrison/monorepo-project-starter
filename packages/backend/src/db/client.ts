@@ -1,7 +1,7 @@
 import { Pool } from "pg";
 
 const pool = new Pool({
-  database: "chat-log",
+  database: "taskmaster",
   host: "localhost",
   user: "neilmorrison",
   port: 5432,

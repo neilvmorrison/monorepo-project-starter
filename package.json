@@ -6,7 +6,9 @@
     "dev:frontend": "pnpm --filter frontend dev",
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
-    "backend:generate-resource": "pnpm --filter backend generate:resource"
+    "backend:generate-resource": "pnpm --filter backend generate:resource",
+    "backend:add": "pnpm --filter backend add",
+    "frontend:add": "pnpm --filter frontend add"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
@@ -14,8 +16,5 @@
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "frontend": "2.0.0-alpha.4",
-    "lucide-react": "^0.486.0"
-  }
+  "dependencies": {}
 }

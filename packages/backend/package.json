@@ -8,14 +8,15 @@
   "dependencies": {
     "@koa/router": "^13.1.0",
     "add": "^2.0.6",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
     "koa": "^2.15.4",
     "koa-bodyparser": "^4.4.1",
     "koa-logger": "^3.2.1",
     "pg": "^8.14.1",
-    "yarn": "^1.22.22",
-    "shared": "workspace:*"
+    "shared": "workspace:*",
+    "yarn": "^1.22.22"
   },
   "scripts": {
     "start": "node dist/index.js",

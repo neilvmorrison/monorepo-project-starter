@@ -3,7 +3,7 @@ import { Context } from "koa";
 import db from "../../db/client";
 import { AuthService } from "./auth.service";
 import { UserProfilesService } from "../user_profiles/user_profiles.service";
-import { LoginPayload } from "shared/types";
+import { InsertUserProfile, LoginPayload } from "shared/types";
 import { tryCatch } from "shared/utils";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 
@@ -23,6 +23,7 @@ auth_router.get("/", async (ctx: Context) => {
 
 auth_router.post("/login", async (ctx: Context) => {
   const body = ctx.request.body as LoginPayload;
+  console.log(body);
   const { data, error } = await tryCatch<LoginReturn, UnauthorizedError>(
     auth_service.loginUser(body.email, body.password)
   );
@@ -51,6 +52,44 @@ auth_router.post("/logout", async (ctx: Context) => {
 
   ctx.status = 200;
   ctx.body = { success: true };
+});
+
+auth_router.post("/register", async (ctx: Context) => {
+  const body = ctx.request.body as {
+    email: string;
+    password: string;
+    username: string;
+  };
+  const { data: newAuthUser, error } = await tryCatch<LoginReturn>(
+    auth_service.register(body.email, body.password, body.username)
+  );
+  if (error) {
+    ctx.message = error.message;
+  }
+  if (newAuthUser) {
+    ctx.cookies.set("access_token", newAuthUser.accessToken);
+    ctx.cookies.set("refresh_token", newAuthUser.refreshToken);
+    ctx.body = newAuthUser;
+  }
+});
+
+auth_router.get("/current", async (ctx: Context) => {
+  const accessToken = ctx.cookies.get("access_token");
+  if (!accessToken) {
+    ctx.status = 401;
+    ctx.body = { error: "Not authenticated" };
+    return;
+  }
+
+  const current_user = await auth_service.getCurrentUser(accessToken);
+
+  if (!current_user.is_authenticated) {
+    ctx.status = 401;
+    ctx.body = { error: current_user.error };
+    return;
+  }
+
+  ctx.body = current_user;
 });
 
 export default auth_router;

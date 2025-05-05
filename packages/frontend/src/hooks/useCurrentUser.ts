@@ -3,7 +3,8 @@ import apiHandler from "../lib/fetch";
 import { UserProfile } from "shared/types";
 
 async function fetchCurrentUser() {
-  const { data, error } = await apiHandler<UserProfile>("/auth/current");
+  const { data, error } = await apiHandler<UserProfile>("/api/auth/current");
+  console.log(data, error);
   if (error) throw error;
   return data;
 }

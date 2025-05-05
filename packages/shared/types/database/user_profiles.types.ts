@@ -1,20 +1,19 @@
-import { BaseRecord } from "./database";
-import { USER_ROLE } from "./enums";
+import { BaseRecord } from "./base_record.types";
 
 export interface UserProfile extends BaseRecord {
   auth_user_id: string;
   username: string;
-  bio: string | null;
-  requires_password: boolean;
-  role: USER_ROLE;
+  first_name: string | null;
+  last_name: string | null;
+  middle_name: string | null;
 }
 
 export type InsertUserProfile = {
   auth_user_id: string;
   username: string;
-  bio: string | null;
-  base_prompt: string | null;
-  requires_password: boolean;
+  first_name?: string | null;
+  last_name?: string | null;
+  middle_name?: string | null;
 };
 
 export type UpdateUserProfile = Partial<InsertUserProfile>;

@@ -1,9 +1,13 @@
+import { config } from "dotenv";
 import Koa from "koa";
 import router from "./router";
 import logger from "koa-logger";
 import bodyparser from "koa-bodyparser";
 import error_logging from "./middleware/error_logging";
 import authenticationMiddleware from "./middleware/authentication";
+import path from "path";
+
+config({ path: path.resolve(path.join(process.cwd(), ".env")) });
 
 export const app = new Koa();
 
