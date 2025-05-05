@@ -1,6 +1,7 @@
 import useCurrentUser from "../../hooks/useCurrentUser";
 import usePrivateRoute from "../../hooks/usePrivateRoute";
 import LoadingHome from "./loading";
+import { Button } from "design-system";
 
 export default function HomeRoute() {
   const { isAuthenticated, isLoading, user_profile } = usePrivateRoute();
@@ -11,7 +12,7 @@ export default function HomeRoute() {
   return isAuthenticated ? (
     <div>
       <h1 className="text-xl font-bold">Welcome, {user_profile?.username}</h1>
-      <button onClick={() => logOutUser()}>Logout</button>
+      <Button onClick={() => logOutUser()}>Logout</Button>
     </div>
   ) : null;
 }

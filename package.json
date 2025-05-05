@@ -5,11 +5,13 @@
   "scripts": {
     "dev:server": "pnpm --filter server dev",
     "dev:client": "pnpm --filter web-client dev",
+    "dev:design-system": "pnpm --filter design-system run storybook",
     "dev": "pnpm -r --parallel dev",
     "build": "pnpm -r build",
     "server:generate-resource": "pnpm --filter server generate:resource",
     "server:add": "pnpm --filter server add",
-    "client:add": "pnpm --filter web-client add"
+    "client:add": "pnpm --filter web-client add",
+    "ds:build": "pnpm --filter design-system build"
   },
   "devDependencies": {
     "typescript": "^5.0.0"
