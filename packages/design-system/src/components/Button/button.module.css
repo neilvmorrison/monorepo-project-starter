@@ -10,7 +10,7 @@
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 /* Button sizes */

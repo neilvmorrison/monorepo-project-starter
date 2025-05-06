@@ -1,23 +1,12 @@
-import { createBrowserRouter, Outlet } from "react-router";
-import { Text } from "design-system";
+import { createBrowserRouter } from "react-router";
 import AuthRoute from "./auth";
 import HomeRoute from "./home";
+import RootLayout from "./layout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <>
-        <header className="h-[60px] border-b border-b-gray-300 flex items-center px-8">
-          <Text element="h1" size="lg" weight="semibold">
-            🔥 PNPM Project Starter
-          </Text>
-        </header>
-        <main>
-          <Outlet />
-        </main>
-      </>
-    ),
+    element: <RootLayout />,
     children: [
       {
         index: true,
