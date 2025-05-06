@@ -105,7 +105,6 @@ export default function AuthRoute() {
             size="small"
             onClick={() => {
               setIsLogin(!isLogin);
-              setError(null);
             }}
           >
             {isLogin ? "Need an account?" : "Already have an account?"}
