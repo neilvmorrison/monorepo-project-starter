@@ -1,9 +1,12 @@
 import { Outlet } from "react-router";
 import { Text, Avatar } from "design-system";
 import usePrivateRoute from "../hooks/usePrivateRoute";
+import usePageMetadata from "../hooks/usePageMetadata";
+import { APP_NAME } from "../../../shared/constants/index";
 
 export default function RootLayout() {
   const { isAuthenticated, isLoading, user_profile } = usePrivateRoute();
+  usePageMetadata({ title: APP_NAME });
 
   if (isLoading) return <div>Loading...</div>;
 

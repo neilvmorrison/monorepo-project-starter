@@ -51,7 +51,7 @@ select {
   --font-size-md: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.25rem;
-  --font-size-2xl: 1.5rem;
+  --font-size-xxl: 1.5rem;
 
   /* Font weights */
   --font-weight-normal: 400;
@@ -749,7 +749,7 @@ p {
   font-size: var(--font-size-xl);
 }
 .text-xxl {
-  font-size: var(--font-size-2xl);
+  font-size: var(--font-size-xxl);
 }
 .text-h1 {
   font-size: var(--font-size-h1);

@@ -5,8 +5,11 @@ import { Alert } from "../../components/alert";
 import { FormInput } from "../../components/form/FormInput";
 import { useNavigate } from "react-router";
 import { Button, Surface, Text } from "design-system";
+import usePageMetadata from "../../hooks/usePageMetadata";
+import { APP_NAME } from "shared/constants";
 
 export default function AuthRoute() {
+  usePageMetadata({ title: APP_NAME });
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<null | string>(null);
@@ -73,7 +76,12 @@ export default function AuthRoute() {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex flex-col min-h-screen items-center justify-start gap-4">
+      <div className="mt-12">
+        <Text as="h1" weight="bold" size="xxl">
+          {APP_NAME}
+        </Text>
+      </div>
       <Surface
         className="w-full max-w-md mx-4 p-6"
         radius="medium"

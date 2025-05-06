@@ -1,0 +1,100 @@
+.container {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  margin: var(--space-1) 0;
+}
+
+.container.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.disabled .label {
+  cursor: not-allowed;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border-color);
+  border-radius: calc(var(--border-radius) / 2);
+  background-color: transparent;
+  transition: all var(--transition-duration) ease-in-out;
+  position: relative;
+  color: white;
+}
+
+.checkbox.checked {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.checkbox.indeterminate {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.input:focus-visible + .label .checkbox {
+  box-shadow: var(--input-focus-shadow);
+  outline: none;
+}
+
+/* Hover state when not disabled */
+.label:hover .checkbox:not(.disabled) {
+  border-color: var(--primary);
+}
+
+/* Sizes */
+.small {
+  width: 16px;
+  height: 16px;
+}
+
+.medium {
+  width: 20px;
+  height: 20px;
+}
+
+.large {
+  width: 24px;
+  height: 24px;
+}
+
+/* Icon sizing */
+.checkIcon,
+.indeterminateIcon {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Label text styling */
+.labelText {
+  margin-left: var(--space-2);
+  font-size: var(--font-size-md);
+  color: var(--text-primary);
+}
+
+/* Focus ring for better accessibility */
+.input:focus-visible + .label .checkbox {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

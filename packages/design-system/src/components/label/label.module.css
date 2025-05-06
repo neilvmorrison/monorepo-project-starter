@@ -1,0 +1,16 @@
+.label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+}
+
+.inline {
+  display: inline-block;
+  margin-right: 1rem;
+  margin-bottom: 0;
+}
+
+.requiredIndicator {
+  margin-left: 0.25rem;
+  color: var(--error-main);
+}

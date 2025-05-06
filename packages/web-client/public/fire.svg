@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="fireGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D00"/>
+      <stop offset="100%" style="stop-color:#FF9900"/>
+    </linearGradient>
+    <linearGradient id="fireGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="100%" style="stop-color:#FFA500"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#fireGradient1)" d="M16 2C12 8 4 12 4 20C4 26.6 9.4 32 16 32C22.6 32 28 26.6 28 20C28 12 20 8 16 2Z"/>
+  <path fill="url(#fireGradient2)" d="M16 8C14 12 10 14 10 19C10 23.4 12.7 27 16 27C19.3 27 22 23.4 22 19C22 14 18 12 16 8Z"/>
+</svg>

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./input";
+import { Checkbox } from "../checkbox/checkbox";
 
 const SearchIcon = () => (
   <svg
@@ -61,12 +62,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Outline: Story = {
+export const TextInput: Story = {
   args: {
     variant: "outline",
     placeholder: "Enter text...",
     onChange: () => {},
   },
+};
+
+export const FormExample: Story = {
+  args: {
+    onChange: () => {},
+  },
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+      <Input placeholder="Username" onChange={() => {}} />
+      <Input type="password" placeholder="Password" onChange={() => {}} />
+      <Checkbox label="Remember me" onChange={() => {}} />
+    </div>
+  ),
 };
 
 export const Filled: Story = {
