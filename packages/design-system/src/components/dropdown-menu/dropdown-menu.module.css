@@ -1,0 +1,106 @@
+.container {
+  position: relative;
+  display: inline-block;
+}
+
+.trigger {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu {
+  position: absolute;
+  min-width: 160px;
+  background-color: var(--surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-1) 0;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 150ms ease, transform 150ms ease;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.menu.open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Positioning variants */
+.bottom-start {
+  top: 100%;
+  left: 0;
+  margin-top: var(--space-1);
+}
+
+.bottom-end {
+  top: 100%;
+  right: 0;
+  margin-top: var(--space-1);
+}
+
+.top-start {
+  bottom: 100%;
+  left: 0;
+  margin-bottom: var(--space-1);
+}
+
+.top-end {
+  bottom: 100%;
+  right: 0;
+  margin-bottom: var(--space-1);
+}
+
+/* Menu items */
+.item {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  cursor: pointer;
+  user-select: none;
+  color: var(--text);
+  transition: background-color 150ms ease;
+  font-size: var(--font-size-sm);
+  line-height: 1.4;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.item:hover:not(.disabled) {
+  background-color: var(--secondary);
+}
+
+.item:focus {
+  outline: none;
+  background-color: var(--secondary);
+}
+
+.item:active:not(.disabled) {
+  background-color: var(--secondary-hover);
+}
+
+.itemIcon {
+  margin-right: var(--space-2);
+  display: flex;
+  align-items: center;
+  color: var(--text-secondary);
+}
+
+.itemContent {
+  flex: 1;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.separator {
+  height: 1px;
+  margin: var(--space-1) 0;
+  background-color: var(--border);
+}
