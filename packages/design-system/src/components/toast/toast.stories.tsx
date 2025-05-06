@@ -4,6 +4,7 @@ import { Toast, ToastProvider, useToast } from "./toast";
 import type { ToastType, ToastPosition } from "./toast";
 import { Button } from "../button";
 import { Text } from "../text";
+import { Select } from "../select";
 
 const meta = {
   title: "Components/Toast",
@@ -69,8 +70,8 @@ const ToastDemo = () => {
     });
   };
 
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as ToastPosition);
+  const handlePositionChange = (value: ToastPosition) => {
+    setPosition(value);
   };
 
   return (
@@ -79,14 +80,18 @@ const ToastDemo = () => {
         <Text as="h1" weight="bold" size="xl">
           Toast Position
         </Text>
-        <select value={position} onChange={handlePositionChange}>
-          <option value="top-left">Top Left</option>
-          <option value="top-center">Top Center</option>
-          <option value="top-right">Top Right</option>
-          <option value="bottom-left">Bottom Left</option>
-          <option value="bottom-center">Bottom Center</option>
-          <option value="bottom-right">Bottom Right</option>
-        </select>
+        <Select
+          options={[
+            { value: "top-left", label: "Top Left" },
+            { value: "top-center", label: "Top Center" },
+            { value: "top-right", label: "Top Right" },
+            { value: "bottom-left", label: "Bottom Left" },
+            { value: "bottom-center", label: "Bottom Center" },
+            { value: "bottom-right", label: "Bottom Right" },
+          ]}
+          value={position}
+          onChange={handlePositionChange}
+        />
       </div>
 
       <div style={{ display: "flex", gap: "8px" }}>
