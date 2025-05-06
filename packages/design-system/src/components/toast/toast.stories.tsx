@@ -52,7 +52,7 @@ export const Info: Story = {
 
 // Toast System Demo
 const ToastDemo = () => {
-  const { addToast, position, setPosition } = useToast();
+  const { toast, position, setPosition } = useToast();
 
   const showToast = (type: ToastType) => {
     const messages = {
@@ -62,7 +62,7 @@ const ToastDemo = () => {
       info: "Your session will expire in 5 minutes.",
     };
 
-    addToast({
+    toast({
       message: messages[type],
       type,
       duration: type === "error" ? undefined : 3000, // Make error toasts persistent

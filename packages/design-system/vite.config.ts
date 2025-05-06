@@ -9,6 +9,9 @@ export default defineConfig({
     react(),
     dts({
       tsconfigPath: "./tsconfig.build.json",
+      outDir: "./dist",
+      exclude: ["**/*.stories.tsx", "**/*.test.tsx"],
+      insertTypesEntry: true,
     }),
   ],
   server: {

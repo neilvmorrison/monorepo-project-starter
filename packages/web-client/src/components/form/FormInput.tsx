@@ -1,14 +1,15 @@
-import { Input } from "design-system";
+import { Input, InputSize } from "design-system";
 
 interface FormInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
-    "onChange" | "value"
+    "onChange" | "value" | "size"
   > {
   label: string;
   value: string;
   onChange: (value: string) => void;
   error?: string;
+  size?: InputSize;
 }
 
 export function FormInput({
@@ -18,8 +19,12 @@ export function FormInput({
   onChange,
   error,
   className = "",
+  size = "medium",
   ...props
 }: FormInputProps) {
+  // Filter out any props that would conflict with design-system Input
+  const filteredProps = { ...props };
+
   return (
     <div className="mb-4">
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
@@ -29,20 +34,17 @@ export function FormInput({
         id={id}
         value={value}
         onChange={(val: string) => onChange(val)}
+        size={size}
         className={`
           w-full rounded-md border p-2
           ${error ? "border-red-500" : "border-slate-200"}
           ${className}
         `.trim()}
-        aria-invalid={!!error}
-        aria-describedby={error ? `${id}-error` : undefined}
-        {...props}
+        isError={!!error}
+        caption={error || ""}
+        captionType={error ? "error" : "none"}
+        {...filteredProps}
       />
-      {error && (
-        <p id={`${id}-error`} className="mt-1 text-sm text-red-500">
-          {error}
-        </p>
-      )}
     </div>
   );
 }

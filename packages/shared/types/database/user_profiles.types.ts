@@ -8,6 +8,12 @@ export interface UserProfile extends BaseRecord {
   middle_name: string | null;
 }
 
+export interface UserProject extends BaseRecord {
+  name: string;
+  description: string | null;
+  user_id: string;
+}
+
 export type InsertUserProfile = {
   auth_user_id: string;
   username: string;

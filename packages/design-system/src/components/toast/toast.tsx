@@ -22,7 +22,7 @@ export interface ToastProps {
 }
 
 interface ToastContextType {
-  addToast: (toast: Omit<ToastProps, "id">) => string;
+  toast: (toast: Omit<ToastProps, "id">) => string;
   removeToast: (id: string) => void;
   position: ToastPosition;
   setPosition: (position: ToastPosition) => void;
@@ -116,7 +116,7 @@ export const Toast = ({
   id,
   message,
   type,
-  duration,
+  duration = 3000,
   onDismiss,
 }: ToastProps) => {
   useEffect(() => {
@@ -163,7 +163,7 @@ export const ToastProvider: React.FC<{
   const [toasts, setToasts] = useState<ToastProps[]>([]);
   const [position, setPosition] = useState<ToastPosition>(defaultPosition);
 
-  const addToast = (toast: Omit<ToastProps, "id">) => {
+  const toast = (toast: Omit<ToastProps, "id">) => {
     const id = `toast-${Date.now()}-${Math.random()
       .toString(36)
       .substring(2, 9)}`;
@@ -185,7 +185,7 @@ export const ToastProvider: React.FC<{
 
   return (
     <ToastContext.Provider
-      value={{ addToast, removeToast, position, setPosition }}
+      value={{ toast, removeToast, position, setPosition }}
     >
       {children}
       <div

@@ -1,18 +1,17 @@
 import { useState } from "react";
 import apiHandler from "../../lib/fetch";
 import useForm from "../../hooks/useForm";
-import { Alert } from "../../components/alert";
 import { FormInput } from "../../components/form/FormInput";
 import { useNavigate } from "react-router";
-import { Button, Surface, Text } from "design-system";
+import { Button, Surface, Text, useToast } from "design-system";
 import usePageMetadata from "../../hooks/usePageMetadata";
 import { APP_NAME } from "shared/constants";
 
 export default function AuthRoute() {
+  const { toast } = useToast();
   usePageMetadata({ title: APP_NAME });
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);
-  const [error, setError] = useState<null | string>(null);
   const [isLogin, setIsLogin] = useState(true);
 
   const loginForm = useForm({
@@ -36,11 +35,18 @@ export default function AuthRoute() {
       method: "POST",
     });
     if (error) {
-      setError(error.message);
+      toast({
+        message: error.message,
+        type: "error",
+      });
       setLoading(false);
       return;
     }
     setLoading(false);
+    toast({
+      type: "success",
+      message: "Login successful!",
+    });
     navigate("/", { replace: true });
   }
 
@@ -59,7 +65,10 @@ export default function AuthRoute() {
       method: "POST",
     });
     if (error) {
-      setError(error.message);
+      toast({
+        message: error.message,
+        type: "error",
+      });
       setLoading(false);
       return;
     }
@@ -85,7 +94,7 @@ export default function AuthRoute() {
       <Surface
         className="w-full max-w-md mx-4 p-6"
         radius="medium"
-        elevation="small"
+        elevation="low"
       >
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
           <Text as="h1" size="xxl" weight="semibold">
@@ -102,17 +111,6 @@ export default function AuthRoute() {
             {isLogin ? "Need an account?" : "Already have an account?"}
           </Button>
         </div>
-
-        {error && (
-          <Alert
-            variant="error"
-            className="mb-4"
-            title={isLogin ? "Login Failed" : "Registration Failed"}
-          >
-            {error}
-          </Alert>
-        )}
-
         {isLogin ? (
           <form onSubmit={handleLoginSubmit}>
             <div className="mb-4">
