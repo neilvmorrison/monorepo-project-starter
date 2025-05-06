@@ -1,6 +1,7 @@
 .inputWrapper {
   position: relative;
   display: inline-flex;
+  flex-direction: column;
   width: fit-content;
 }
 
@@ -137,4 +138,27 @@
 
 .withIconRight {
   padding-right: calc(var(--space-3) + 20px); /* Adjust based on icon size */
+}
+
+/* Caption styles */
+.caption {
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-1);
+  line-height: 1.4;
+}
+
+.caption-error {
+  color: var(--error);
+}
+
+.caption-success {
+  color: var(--success);
+}
+
+.caption-warning {
+  color: var(--warning, #f59e0b);
+}
+
+.caption-info {
+  color: var(--info, #3b82f6);
 }

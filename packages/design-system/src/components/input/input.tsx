@@ -4,6 +4,7 @@ import styles from "./input.module.css";
 
 export type InputVariant = "outline" | "filled" | "unstyled";
 export type InputSize = "small" | "medium" | "large";
+export type CaptionType = "error" | "success" | "warning" | "info" | "none";
 
 export interface InputProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "onChange"> {
@@ -48,6 +49,17 @@ export interface InputProps
   isSuccess?: boolean;
 
   /**
+   * Caption text to display below the input
+   */
+  caption?: string;
+
+  /**
+   * Type of caption styling to apply
+   * @default 'none'
+   */
+  captionType?: CaptionType;
+
+  /**
    * Additional CSS classes to apply to the input
    */
   className?: string;
@@ -65,6 +77,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       iconRight,
       isError = false,
       isSuccess = false,
+      caption,
+      captionType = "none",
       className = "",
       disabled,
       onChange,
@@ -72,6 +86,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
+    // If isError or isSuccess is set, automatically set captionType
+    const resolvedCaptionType = isError
+      ? "error"
+      : isSuccess
+      ? "success"
+      : captionType;
+
     // Combine utility classes
     const inputClasses = [
       styles.input,
@@ -94,6 +115,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       .filter(Boolean)
       .join(" ");
 
+    const captionClasses = [
+      styles.caption,
+      resolvedCaptionType !== "none"
+        ? styles[`caption-${resolvedCaptionType}`]
+        : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <div className={wrapperClasses}>
         {iconLeft && <span className={styles.iconLeft}>{iconLeft}</span>}
@@ -107,6 +137,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         />
 
         {iconRight && <span className={styles.iconRight}>{iconRight}</span>}
+
+        {caption && <div className={captionClasses}>{caption}</div>}
       </div>
     );
   }

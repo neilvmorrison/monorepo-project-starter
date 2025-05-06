@@ -156,6 +156,7 @@ export const Error: Story = {
   args: {
     placeholder: "Error state",
     isError: true,
+    caption: "This field is required",
     onChange: () => {},
   },
 };
@@ -164,6 +165,7 @@ export const Success: Story = {
   args: {
     placeholder: "Success state",
     isSuccess: true,
+    caption: "Username is available",
     onChange: () => {},
   },
 };
@@ -196,6 +198,24 @@ export const Password: Story = {
   args: {
     placeholder: "Enter password",
     type: "password",
+    onChange: () => {},
+  },
+};
+
+export const WithWarningCaption: Story = {
+  args: {
+    placeholder: "Enter text...",
+    caption: "This action cannot be undone",
+    captionType: "warning",
+    onChange: () => {},
+  },
+};
+
+export const WithInfoCaption: Story = {
+  args: {
+    placeholder: "Enter email",
+    caption: "We'll never share your email with anyone else",
+    captionType: "info",
     onChange: () => {},
   },
 };
