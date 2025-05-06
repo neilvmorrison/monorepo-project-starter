@@ -1,4 +1,3 @@
-import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Toast, ToastProvider, useToast } from "./toast";
 import type { ToastType, ToastPosition } from "./toast";
