@@ -6,7 +6,7 @@ export type InputVariant = "outline" | "filled" | "unstyled";
 export type InputSize = "small" | "medium" | "large";
 
 export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size"> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "size" | "onChange"> {
   /**
    * The visual style of the input
    * @default 'outline'
@@ -51,6 +51,8 @@ export interface InputProps
    * Additional CSS classes to apply to the input
    */
   className?: string;
+
+  onChange: (e: string) => void;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -65,6 +67,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       isSuccess = false,
       className = "",
       disabled,
+      onChange,
       ...props
     },
     ref
@@ -100,6 +103,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={inputClasses}
           disabled={disabled}
           {...props}
+          onChange={(e) => onChange(e.target.value)}
         />
 
         {iconRight && <span className={styles.iconRight}>{iconRight}</span>}

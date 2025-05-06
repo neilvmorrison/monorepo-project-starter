@@ -22,8 +22,15 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "paths": {
-      "shared/*": ["../shared/*"]
+      "shared/*": ["../shared/*"],
+      "design-system": ["../design-system/dist"],
+      "design-system/*": ["../design-system/dist/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "references": [
+    {
+      "path": "../design-system/tsconfig.build.json"
+    }
+  ]
 }

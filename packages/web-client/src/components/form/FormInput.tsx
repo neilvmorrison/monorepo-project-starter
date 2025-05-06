@@ -1,3 +1,5 @@
+import { Input } from "design-system";
+
 interface FormInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
@@ -23,10 +25,10 @@ export function FormInput({
       <label htmlFor={id} className="mb-2 block text-sm font-medium">
         {label}
       </label>
-      <input
+      <Input
         id={id}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(val: string) => onChange(val)}
         className={`
           w-full rounded-md border p-2
           ${error ? "border-red-500" : "border-slate-200"}

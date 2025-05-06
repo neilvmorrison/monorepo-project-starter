@@ -66,8 +66,8 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
   ) => {
     // Generate a consistent color based on the initials if no backgroundColor is provided
     const bgColor = useMemo(() => {
-      if (backgroundColor) return backgroundColor;
-      if (!initials) return "#3366FF"; // Default to primary color if no initials
+      if (backgroundColor) return backgroundColor ?? "#ff4a55";
+      if (!initials) return "#FF4A55"; // Default to primary color if no initials
 
       // Generate a color based on the initials
       let hash = 0;

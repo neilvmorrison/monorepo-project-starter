@@ -11,12 +11,12 @@ export default function RootLayout() {
   return (
     <>
       <header className="h-[60px] border-b border-b-gray-300 dark:border-b-gray-800 flex items-center px-8 justify-between">
-        <Text element="h1" size="lg" weight="semibold">
+        <Text as="h1" size="lg" weight="semibold">
           🔥 PNPM Project Starter
         </Text>
         <div className="flex items-center gap-4">
           <Text weight="semibold">{user_profile?.username}</Text>
-          <Avatar initials={user_profile?.username[0]} />
+          <Avatar initials={user_profile?.username} />
         </div>
       </header>
       <main className="p-8 light:bg-[#efefef] min-h-[calc(100vh-60px)]">

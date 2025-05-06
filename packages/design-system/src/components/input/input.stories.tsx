@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Input } from "./input";
 
-// Icons (mock for demonstration)
 const SearchIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -66,6 +65,7 @@ export const Outline: Story = {
   args: {
     variant: "outline",
     placeholder: "Enter text...",
+    onChange: () => {},
   },
 };
 
@@ -73,6 +73,7 @@ export const Filled: Story = {
   args: {
     variant: "filled",
     placeholder: "Enter text...",
+    onChange: () => {},
   },
 };
 
@@ -80,6 +81,7 @@ export const Unstyled: Story = {
   args: {
     variant: "unstyled",
     placeholder: "Enter text...",
+    onChange: () => {},
   },
 };
 
@@ -87,6 +89,7 @@ export const Small: Story = {
   args: {
     size: "small",
     placeholder: "Small input",
+    onChange: () => {},
   },
 };
 
@@ -94,6 +97,7 @@ export const Medium: Story = {
   args: {
     size: "medium",
     placeholder: "Medium input",
+    onChange: () => {},
   },
 };
 
@@ -101,6 +105,7 @@ export const Large: Story = {
   args: {
     size: "large",
     placeholder: "Large input",
+    onChange: () => {},
   },
 };
 
@@ -112,6 +117,7 @@ export const WithLeftIcon: Story = {
     variant: "outline",
     size: "medium",
     "aria-label": "Search",
+    onChange: () => {},
   },
 };
 
@@ -119,6 +125,7 @@ export const WithRightIcon: Story = {
   args: {
     placeholder: "Enter text...",
     iconRight: <CheckIcon />,
+    onChange: () => {},
   },
 };
 
@@ -127,6 +134,7 @@ export const WithBothIcons: Story = {
     placeholder: "Search...",
     iconLeft: <SearchIcon />,
     iconRight: <CheckIcon />,
+    onChange: () => {},
   },
 };
 
@@ -134,6 +142,7 @@ export const Error: Story = {
   args: {
     placeholder: "Error state",
     isError: true,
+    onChange: () => {},
   },
 };
 
@@ -141,6 +150,7 @@ export const Success: Story = {
   args: {
     placeholder: "Success state",
     isSuccess: true,
+    onChange: () => {},
   },
 };
 
@@ -148,6 +158,7 @@ export const Disabled: Story = {
   args: {
     placeholder: "Disabled input",
     disabled: true,
+    onChange: () => {},
   },
 };
 
@@ -155,6 +166,7 @@ export const FullWidth: Story = {
   args: {
     placeholder: "Full width input",
     fullWidth: true,
+    onChange: () => {},
   },
 };
 
@@ -162,6 +174,7 @@ export const WithValue: Story = {
   args: {
     placeholder: "Enter text...",
     defaultValue: "This is a pre-filled value",
+    onChange: () => {},
   },
 };
 
@@ -169,5 +182,6 @@ export const Password: Story = {
   args: {
     placeholder: "Enter password",
     type: "password",
+    onChange: () => {},
   },
 };
