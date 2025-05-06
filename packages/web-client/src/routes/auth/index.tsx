@@ -4,7 +4,7 @@ import useForm from "../../hooks/useForm";
 import { Alert } from "../../components/alert";
 import { FormInput } from "../../components/form/FormInput";
 import { useNavigate } from "react-router";
-import { Button, Surface } from "design-system";
+import { Button, Surface, Text } from "design-system";
 
 export default function AuthRoute() {
   const navigate = useNavigate();
@@ -80,9 +80,9 @@ export default function AuthRoute() {
         elevation="small"
       >
         <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
-          <h1 className="text-2xl font-bold">
+          <Text as="h1" size="xxl" weight="semibold">
             {isLogin ? "Login" : "Register"}
-          </h1>
+          </Text>
           <Button
             variant="ghost"
             size="small"

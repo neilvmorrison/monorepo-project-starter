@@ -1,0 +1,140 @@
+.inputWrapper {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+}
+
+.input {
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  border-radius: var(--border-radius);
+  transition: all var(--transition-duration) ease-in-out;
+  background-color: white;
+  color: var(--text);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: var(--input-focus-shadow);
+  border-color: var(--primary);
+}
+
+.input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--disabled-bg);
+}
+
+/* Input sizes */
+.small {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--font-size-sm);
+  min-height: 32px;
+}
+
+.medium {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-md);
+  min-height: 40px;
+}
+
+.large {
+  padding: var(--space-3) var(--space-4);
+  font-size: var(--font-size-lg);
+  min-height: 48px;
+}
+
+/* Input variants */
+.outline {
+  border: 1px solid var(--border-color);
+  background-color: white;
+}
+
+.outline:focus {
+  border-color: var(--primary);
+}
+
+.filled {
+  border: 1px solid transparent;
+  background-color: var(--input-filled-bg, var(--secondary));
+}
+
+.filled:focus {
+  background-color: var(--input-filled-focus-bg, rgba(0, 0, 0, 0.05));
+}
+
+.unstyled {
+  border: none;
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.unstyled:focus {
+  box-shadow: none;
+}
+
+/* Input states */
+.error {
+  border-color: var(--error) !important;
+}
+
+.error:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+.success {
+  border-color: var(--success) !important;
+}
+
+.success:focus {
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Fullwidth input */
+.fullWidth {
+  width: 100%;
+}
+
+.inputWrapper.fullWidth {
+  width: 100%;
+}
+
+/* Input with icons */
+.iconLeft {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-muted);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconRight {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--text-muted);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Inputs with icons */
+.withIconLeft {
+  padding-left: calc(var(--space-3) + 20px); /* Adjust based on icon size */
+}
+
+.withIconRight {
+  padding-right: calc(var(--space-3) + 20px); /* Adjust based on icon size */
+}

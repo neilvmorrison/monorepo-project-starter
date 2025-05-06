@@ -1,0 +1,74 @@
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-medium);
+  color: white;
+  overflow: hidden;
+  user-select: none;
+  font-family: var(--font-family-sans);
+  position: relative;
+}
+
+/* Avatar sizes */
+.xsmall {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+}
+
+.small {
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
+}
+
+.medium {
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.large {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+.xlarge {
+  width: 64px;
+  height: 64px;
+  font-size: 20px;
+}
+
+/* Avatar shapes */
+.circle {
+  border-radius: 50%;
+}
+
+.square {
+  border-radius: var(--border-radius);
+}
+
+/* Avatar image */
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Clickable avatar */
+.avatar[role="button"] {
+  cursor: pointer;
+  transition: all var(--transition-duration) ease-in-out;
+}
+
+.avatar[role="button"]:hover {
+  opacity: 0.9;
+}
+
+.avatar[role="button"]:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}

@@ -6,6 +6,7 @@ export * from "./components/button";
 export * from "./components/accordion";
 export * from "./components/surface";
 export * from "./components/text";
+export * from "./components/input";
 
 // Export theme
 export * from "./theme";

@@ -1,4 +1,5 @@
 import { createBrowserRouter, Outlet } from "react-router";
+import { Text } from "design-system";
 import AuthRoute from "./auth";
 import HomeRoute from "./home";
 
@@ -6,9 +7,16 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <main>
-        <Outlet />
-      </main>
+      <>
+        <header className="h-[60px] border-b border-b-gray-300 flex items-center px-8">
+          <Text element="h1" size="lg" weight="semibold">
+            🔥 PNPM Project Starter
+          </Text>
+        </header>
+        <main>
+          <Outlet />
+        </main>
+      </>
     ),
     children: [
       {
