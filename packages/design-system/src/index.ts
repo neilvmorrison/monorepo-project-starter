@@ -10,3 +10,4 @@ export * from "./components/input";
 export * from "./components/avatar";
 export * from "./components/label";
 export * from "./components/toast";
+export * from "./components/dropdown-menu";
