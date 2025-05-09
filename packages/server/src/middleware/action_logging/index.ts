@@ -22,12 +22,15 @@ function getActionType(url: string) {
 
 export default async function action_logging(ctx: Context, next: Next) {
   await next();
-
   const access_token = ctx.cookies.get("access_token");
-  console.log(ctx);
   let auth_user_id: string | undefined;
   const action = getActionType(ctx.originalUrl);
-  if (access_token && action) {
+  if (
+    access_token &&
+    action &&
+    ctx.response.status >= 200 &&
+    ctx.response.status < 400
+  ) {
     const decoded = decodeToken(access_token)?.userId;
     auth_user_id = decoded;
     await actionLogService.create({
