@@ -10,7 +10,7 @@ export class SessionsService extends DatabaseService<"auth.sessions"> {
   }
 
   async invalidateCurrentSession(id: string) {
-    this.update(id, { is_revoked: true });
+    this._delete(id);
   }
 
   async currentSessionIsValid(auth_user_id: string, refresh_token: string) {

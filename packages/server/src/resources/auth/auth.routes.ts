@@ -77,14 +77,13 @@ auth_router.post("/register", async (ctx: Context) => {
 });
 
 auth_router.get("/current", async (ctx: Context) => {
-  const accessToken = ctx.cookies.get("access_token");
-  if (!accessToken) {
+  const refresh_token = ctx.cookies.get("refresh_token");
+  if (!refresh_token) {
     ctx.status = 401;
     ctx.body = { error: "Not authenticated" };
     return;
   }
-
-  const current_user = await auth_service.getCurrentUser(accessToken);
+  const current_user = await auth_service.getCurrentUser(refresh_token);
 
   if (!current_user.is_authenticated) {
     ctx.status = 401;

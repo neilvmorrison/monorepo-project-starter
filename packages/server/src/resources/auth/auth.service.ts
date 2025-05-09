@@ -101,10 +101,10 @@ export class AuthService extends DatabaseService<"auth.users"> {
     return this.loginUser(newAuthUser.email, password);
   }
 
-  async getCurrentUser(access_token: string) {
-    const valid_token = verifyToken(access_token, "access");
+  async getCurrentUser(refresh_token: string) {
+    const valid_token = verifyToken(refresh_token, "refresh");
     if (valid_token) {
-      const decoded = decodeToken(access_token);
+      const decoded = decodeToken(refresh_token);
       if (decoded?.userId) {
         const user_profile = await this.userService.findFirst({
           auth_user_id: decoded?.userId,
