@@ -6,6 +6,7 @@ import bodyparser from "koa-bodyparser";
 import error_logging from "./middleware/error_logging";
 import authenticationMiddleware from "./middleware/authentication";
 import path from "path";
+import action_logging from "./middleware/action_logging";
 
 config({ path: path.resolve(path.join(process.cwd(), ".env")) });
 
@@ -17,7 +18,7 @@ router.get("/health", async (ctx) => {
 
 app.use(error_logging);
 app.use(authenticationMiddleware);
-// TODO: Implement Action Logging
+app.use(action_logging);
 app.use(logger());
 app.use(bodyparser());
 app.use(router.routes());

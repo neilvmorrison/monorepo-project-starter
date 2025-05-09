@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-interface TokenPayload {
+export interface TokenPayload {
   userId: string;
   email: string;
 }
@@ -64,6 +64,19 @@ export function decodeToken(token: string): TokenPayload | null {
   try {
     const decoded = jwt.decode(token) as TokenPayload;
     return decoded;
+  } catch (error) {
+    return null;
+  }
+}
+
+export function getTokenExpiry(token: string): Date | null {
+  try {
+    const decoded = jwt.decode(token) as { exp: number };
+    if (decoded && decoded.exp) {
+      // exp is in seconds, convert to milliseconds for Date
+      return new Date(decoded.exp * 1000);
+    }
+    return null;
   } catch (error) {
     return null;
   }

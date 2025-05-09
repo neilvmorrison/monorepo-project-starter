@@ -4,3 +4,5 @@ export * from "./database/auth_users.types";
 export * from "./database/enums";
 export * from "./database/user_profiles.types";
 export * from "./database/error_logs.types";
+export * from "./database/action_logs.types";
+export * from "./database/sessions.types";

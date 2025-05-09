@@ -25,6 +25,7 @@ export default function useCurrentUser() {
   } = useQuery({
     queryKey: ["current_user"],
     queryFn: async () => fetchCurrentUser(),
+    retry: 0,
   });
 
   const { mutateAsync: logOutUser, isPending } = useMutation({

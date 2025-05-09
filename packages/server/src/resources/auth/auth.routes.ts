@@ -6,15 +6,18 @@ import { UserProfilesService } from "../user_profiles/user_profiles.service";
 import { InsertUserProfile, LoginPayload } from "shared/types";
 import { tryCatch } from "shared/utils";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
+import { SessionsService } from "./sessions.service";
 
 type LoginReturn = {
   accessToken: string;
   refreshToken: string;
+  authUserId: string;
 };
 
 const auth_router = new Router({ prefix: "/auth" });
 const userService = new UserProfilesService(db);
-const auth_service = new AuthService(db, userService);
+const sessionService = new SessionsService(db);
+const auth_service = new AuthService(db, userService, sessionService);
 
 auth_router.get("/", async (ctx: Context) => {
   const result = await auth_service.findMany();
@@ -31,6 +34,7 @@ auth_router.post("/login", async (ctx: Context) => {
     ctx.body = { error: error.message };
     throw error;
   }
+  ctx.state = data.authUserId;
   ctx.cookies.set("access_token", data.accessToken);
   ctx.cookies.set("refresh_token", data.refreshToken);
   ctx.body = data;

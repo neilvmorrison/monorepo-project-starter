@@ -135,10 +135,11 @@ export default function AuthRoute() {
               />
             </div>
             <Button
+              isLoading={isLoading}
               type="submit"
               className="w-full rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
-              {isLoading ? "Loading" : "Login"}
+              Login
             </Button>
           </form>
         ) : (
@@ -176,8 +177,8 @@ export default function AuthRoute() {
                 onChange={(value) => registerForm.setValue("password", value)}
               />
             </div>
-            <Button type="submit" className="w-full">
-              {isLoading ? "Loading" : "Register"}
+            <Button type="submit" className="w-full" isLoading={isLoading}>
+              Register
             </Button>
           </form>
         )}

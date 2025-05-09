@@ -5,3 +5,9 @@ export enum USER_ROLES {
   USER = "USER",
   GUEST = "GUEST",
 }
+
+export enum ACTION_LOGS {
+  LOGIN = "LOGIN",
+  LOGOUT = "LOGOUT",
+  REGISTER = "REGISTER",
+}
