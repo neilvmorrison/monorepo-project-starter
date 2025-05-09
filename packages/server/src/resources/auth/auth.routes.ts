@@ -29,7 +29,7 @@ auth_router.post("/login", async (ctx: Context) => {
   if (error) {
     ctx.status = error.status || 500;
     ctx.body = { error: error.message };
-    return;
+    throw error;
   }
   ctx.cookies.set("access_token", data.accessToken);
   ctx.cookies.set("refresh_token", data.refreshToken);

@@ -1,4 +1,5 @@
 import { AuthUser, InsertAuthUser, UpdateAuthUser } from "./auth_users.types";
+import { ErrorLog, InsertErrorLog, UpdateErrorLog } from "./error_logs.types";
 import {
   InsertUserProfile,
   UpdateUserProfile,
@@ -17,9 +18,16 @@ export interface UserProfilesTable {
   insert: InsertUserProfile;
 }
 
+export interface ErrorLogsTable {
+  row: ErrorLog;
+  update: UpdateErrorLog;
+  insert: InsertErrorLog;
+}
+
 export interface Database {
   "auth.users": AuthUsersTable;
   user_profiles: UserProfilesTable;
+  error_logs: ErrorLogsTable;
 }
 
 export default Database;
