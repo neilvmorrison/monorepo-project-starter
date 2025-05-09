@@ -1,5 +1,5 @@
 import { useState } from "react";
-import apiHandler from "../../lib/fetch";
+import apiHandler from "../../lib/api";
 import useForm from "../../hooks/useForm";
 import { FormInput } from "../../components/form/FormInput";
 import { useNavigate } from "react-router";

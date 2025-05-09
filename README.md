@@ -1,4 +1,4 @@
-# 🔥 PNPM Monorepo Starter
+# 🔥 PNPM Monorepo Saas Starter
 
 A TypeScript monorepo using PNPM workspaces with four main packages:
 

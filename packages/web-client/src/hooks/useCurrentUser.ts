@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import apiHandler from "../lib/fetch";
+import apiHandler from "../lib/api";
 import { CurrentUser } from "shared/types";
 
 async function fetchCurrentUser() {

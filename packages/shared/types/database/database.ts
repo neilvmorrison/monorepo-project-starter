@@ -1,5 +1,4 @@
 import { AuthUser, InsertAuthUser, UpdateAuthUser } from "./auth_users.types";
-import { BaseRecord } from "./base_record.types";
 import {
   InsertUserProfile,
   UpdateUserProfile,
@@ -12,7 +11,7 @@ export interface AuthUsersTable {
   insert: InsertAuthUser;
 }
 
-export interface UserProfilesTable extends BaseRecord {
+export interface UserProfilesTable {
   row: UserProfile;
   update: UpdateUserProfile;
   insert: InsertUserProfile;

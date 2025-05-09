@@ -1,6 +1,6 @@
 import { Input, InputSize } from "design-system";
 
-interface FormInputProps
+export interface FormInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
     "onChange" | "value" | "size"
@@ -12,7 +12,7 @@ interface FormInputProps
   size?: InputSize;
 }
 
-export default function FormInput({
+export function FormInput({
   label,
   id,
   value,
@@ -22,7 +22,6 @@ export default function FormInput({
   size = "medium",
   ...props
 }: FormInputProps) {
-  // Filter out any props that would conflict with design-system Input
   const filteredProps = { ...props };
 
   return (
