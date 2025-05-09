@@ -23,10 +23,10 @@ export class SessionsService extends DatabaseService<"auth.sessions"> {
     }
 
     const { data: tokenIsValid, error: tokenError } = await tryCatch(
-      hash_is_valid(refresh_token, process.env.REFRESH_TOKEN_SECRET!)
+      hash_is_valid(refresh_token, session.token_hash)
     );
 
-    if (tokenError || !tokenIsValid || session.is_revoked) {
+    if (tokenError || !tokenIsValid) {
       return false;
     }
     this.invalidateCurrentSession(session.id);

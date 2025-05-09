@@ -5,6 +5,7 @@ import {
   issueAccessToken,
   issueRefreshToken,
   TokenPayload,
+  TokenReturn,
 } from "../../resources/auth/jwt";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { tryCatchSync } from "shared/utils";
@@ -25,22 +26,18 @@ export default async function authenticationMiddleware(
   if (ctx.path === "/api/auth/login" || ctx.path === "/api/auth/register") {
     return await next();
   }
-
   if (!accessToken || !refreshToken) {
     throw new UnauthorizedError();
   }
 
-  const { data: accessData, error: accessError } = tryCatchSync<TokenPayload>(
+  const { data: accessData, error: accessError } = tryCatchSync<TokenReturn>(
     () =>
-      jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as TokenPayload
+      jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as TokenReturn
   );
 
-  const { data: refreshData, error: refreshError } = tryCatchSync<TokenPayload>(
+  const { data: refreshData, error: refreshError } = tryCatchSync<TokenReturn>(
     () =>
-      jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET!
-      ) as TokenPayload
+      jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as TokenReturn
   );
 
   if (refreshError) throw new UnauthorizedError();
@@ -81,8 +78,14 @@ export default async function authenticationMiddleware(
       throw new UnauthorizedError();
     }
 
-    const new_access = issueAccessToken(refreshData);
-    const new_refresh = issueRefreshToken(refreshData);
+    const new_access = issueAccessToken({
+      email: refreshData?.email,
+      userId: refreshData?.userId,
+    });
+    const new_refresh = issueRefreshToken({
+      email: refreshData?.email,
+      userId: refreshData?.userId,
+    });
     const new_tokens = {
       access_token: new_access,
       refresh_token: new_refresh,
@@ -91,9 +94,7 @@ export default async function authenticationMiddleware(
     const token_hash = await create_hash(new_refresh);
     await sessionsService.create({
       auth_user_id: refreshData.userId,
-      expires_at:
-        getTokenExpiry(new_refresh) ||
-        new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      expires_at: getTokenExpiry(new_refresh) || new Date(refreshData.exp),
       token_hash,
       is_revoked: false,
     });

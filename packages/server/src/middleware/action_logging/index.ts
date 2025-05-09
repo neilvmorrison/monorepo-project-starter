@@ -16,8 +16,6 @@ function getActionType(url: string) {
   if (url.includes("/register")) {
     return ACTION_LOGS.REGISTER;
   }
-  // Default to LOGIN for other paths
-  // return ACTION_LOGS.LOGIN;
 }
 
 export default async function action_logging(ctx: Context, next: Next) {

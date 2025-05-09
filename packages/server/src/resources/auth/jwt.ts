@@ -1,5 +1,12 @@
 import jwt from "jsonwebtoken";
 
+export interface TokenReturn {
+  userId: string;
+  email: string;
+  exp: number;
+  iat: number;
+}
+
 export interface TokenPayload {
   userId: string;
   email: string;
@@ -8,7 +15,7 @@ export interface TokenPayload {
 export function issueAccessToken(payload: TokenPayload): string {
   const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET!;
   return jwt.sign(payload, ACCESS_TOKEN_SECRET, {
-    expiresIn: "15m",
+    expiresIn: 30,
   });
 }
 
@@ -16,7 +23,7 @@ export function issueRefreshToken(payload: TokenPayload): string {
   const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET!;
 
   return jwt.sign(payload, REFRESH_TOKEN_SECRET, {
-    expiresIn: "7d",
+    expiresIn: 60 * 60 * 24 * 7,
   });
 }
 
@@ -30,9 +37,12 @@ export function swapRefreshToken(refreshToken: string): {
     const payload = jwt.verify(
       refreshToken,
       REFRESH_TOKEN_SECRET
-    ) as TokenPayload;
+    ) as TokenReturn;
 
-    const newAccessToken = issueAccessToken(payload);
+    const newAccessToken = issueAccessToken({
+      email: payload.email,
+      userId: payload.userId,
+    });
     const newRefreshToken = issueRefreshToken(payload);
 
     return {
@@ -71,9 +81,13 @@ export function decodeToken(token: string): TokenPayload | null {
 
 export function getTokenExpiry(token: string): Date | null {
   try {
-    const decoded = jwt.decode(token) as { exp: number };
+    const decoded = jwt.decode(token) as {
+      email: string;
+      userId: string;
+      iat: number;
+      exp: number;
+    };
     if (decoded && decoded.exp) {
-      // exp is in seconds, convert to milliseconds for Date
       return new Date(decoded.exp * 1000);
     }
     return null;
