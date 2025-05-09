@@ -1,54 +1,63 @@
-# React + TypeScript + Vite
+# Design System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A comprehensive design system for the monorepo project, providing reusable UI components with consistent styling and behavior.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Independent component library without external UI dependencies
+- Storybook for component development and documentation
+- TypeScript for type safety
+- CSS Modules for component-scoped styling
+- Animation support with React Spring
 
-## Expanding the ESLint configuration
+## Components
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+The design system includes the following components:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Button - Various button styles with different variants and sizes
+- Text - Typography components for consistent text styling
+- Surface - Container components with consistent styling
+- Input - Form input components with validation
+- Dropdown - Dropdown menus with rich content support
+- Toast - Notification system
+- Avatar - User avatar components
+- And more...
+
+## Development
+
+```bash
+# Start Storybook for component development
+pnpm storybook
+
+# Build the design system
+pnpm build
+
+# Lint the code
+pnpm lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Usage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Import components in your application:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```tsx
+import { Button, Text, Avatar } from "design-system";
+
+function MyComponent() {
+  return (
+    <div>
+      <Text as="h1" size="xxl">
+        Welcome
+      </Text>
+      <Button variant="primary" onClick={() => console.log("Clicked")}>
+        Click me
+      </Button>
+    </div>
+  );
+}
 ```
+
+## Further Resources
+
+- [Storybook Documentation](https://storybook.js.org/docs/get-started/install)
+- [React Spring Documentation](https://www.react-spring.dev/docs/getting-started)

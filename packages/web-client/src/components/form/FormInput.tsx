@@ -12,7 +12,7 @@ interface FormInputProps
   size?: InputSize;
 }
 
-export function FormInput({
+export default function FormInput({
   label,
   id,
   value,
