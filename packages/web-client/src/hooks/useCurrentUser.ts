@@ -3,7 +3,9 @@ import apiHandler from "../lib/api";
 import { CurrentUser } from "shared/types";
 
 async function fetchCurrentUser() {
-  const { data, error } = await apiHandler<CurrentUser>("/api/auth/current");
+  const { data, error } = await apiHandler<CurrentUser & { email: string }>(
+    "/api/auth/current"
+  );
   if (error) throw error;
   return data;
 }

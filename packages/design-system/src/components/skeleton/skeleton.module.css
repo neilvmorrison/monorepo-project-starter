@@ -1,0 +1,80 @@
+.skeleton {
+  display: block;
+  background-color: var(--color-skeleton-base, #e2e8f0);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Variant styles */
+.variantText {
+  border-radius: 4px;
+  transform: scale(1, 0.6);
+  margin-top: 0;
+  margin-bottom: 0;
+  transform-origin: 0 60%;
+}
+
+.variantCircular {
+  border-radius: 50%;
+}
+
+.variantRectangular {
+  border-radius: 0;
+}
+
+.variantRounded {
+  border-radius: 8px;
+}
+
+/* Animation styles */
+.animationPulse {
+  animation: pulse 1.5s ease-in-out 0.5s infinite;
+}
+
+.animationWave {
+  position: relative;
+}
+
+.animationWave::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-skeleton-highlight, rgba(255, 255, 255, 0.4)),
+    transparent
+  );
+  animation: wave 1.6s linear 0.5s infinite;
+}
+
+.animationNone {
+  animation: none;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes wave {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

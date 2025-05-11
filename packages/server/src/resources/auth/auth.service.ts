@@ -111,7 +111,10 @@ export class AuthService extends DatabaseService<"auth.users"> {
         });
         return {
           is_authenticated: true,
-          user_profile,
+          user_profile: {
+            ...user_profile,
+            email: decoded?.email,
+          },
           error: null,
         };
       }

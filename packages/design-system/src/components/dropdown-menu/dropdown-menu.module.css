@@ -69,6 +69,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  background: var(--background);
 }
 
 .item:hover:not(.disabled) {
