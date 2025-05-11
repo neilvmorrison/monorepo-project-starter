@@ -6,6 +6,7 @@ export interface UserProfile extends BaseRecord {
   first_name: string | null;
   last_name: string | null;
   middle_name: string | null;
+  email: string | null;
 }
 
 export interface UserProject extends BaseRecord {
@@ -20,6 +21,7 @@ export type InsertUserProfile = {
   first_name?: string | null;
   last_name?: string | null;
   middle_name?: string | null;
+  email?: string | null;
 };
 
 export type UpdateUserProfile = Partial<InsertUserProfile>;
