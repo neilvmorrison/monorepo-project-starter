@@ -3,7 +3,7 @@ import { Context } from "koa";
 import db from "../../db/client";
 import { AuthService } from "./auth.service";
 import { UserProfilesService } from "../user_profiles/user_profiles.service";
-import { InsertUserProfile, LoginPayload } from "shared/types";
+import { LoginPayload } from "shared/types";
 import { tryCatch } from "shared/utils";
 import { UnauthorizedError } from "../../errors/UnauthorizedError";
 import { SessionsService } from "./sessions.service";
