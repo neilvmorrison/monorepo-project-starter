@@ -1,0 +1,432 @@
+#!/usr/bin/env ts-node
+
+import fs from "fs";
+import path from "path";
+import pool from "../db/client";
+
+// Map PostgreSQL types to TypeScript types
+const pgToTsTypeMap: Record<string, string> = {
+  uuid: "string",
+  text: "string",
+  varchar: "string",
+  char: "string",
+  "character varying": "string",
+  "timestamp with time zone": "Date",
+  "timestamp without time zone": "Date",
+  timestamp: "Date",
+  date: "Date",
+  time: "Date",
+  boolean: "boolean",
+  bool: "boolean",
+  integer: "number",
+  int: "number",
+  smallint: "number",
+  bigint: "number",
+  decimal: "number",
+  numeric: "number",
+  real: "number",
+  "double precision": "number",
+  float: "number",
+  jsonb: "Record<string, any>",
+  json: "Record<string, any>",
+  array: "any[]",
+  bytea: "Buffer",
+  // Enum types will be handled specially
+};
+
+// Store enum types and their values
+type EnumType = {
+  name: string;
+  values: string[];
+};
+
+// Create the types directory if it doesn't exist
+const TYPES_DIR = path.resolve(__dirname, "../../../../shared/types/database");
+
+// Ensure the directory exists
+function ensureDirectoryExists(dirPath: string): void {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+}
+
+// Convert snake_case to PascalCase for type names
+function snakeToPascalCase(str: string): string {
+  return str
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("");
+}
+
+// Generate TypeScript types for enum values
+function generateEnumTypes(enums: EnumType[]): string {
+  if (enums.length === 0) return "";
+
+  let content = "// PostgreSQL enum types\n\n";
+
+  for (const enumType of enums) {
+    const typeName = snakeToPascalCase(enumType.name);
+
+    // Generate union type
+    content += `export type ${typeName} = ${enumType.values
+      .map((v) => `'${v}'`)
+      .join(" | ")};\n\n`;
+
+    // Generate enum object with values
+    content += `export const ${typeName}Values = {\n`;
+    enumType.values.forEach((value) => {
+      // Create a camelCase property name for each enum value
+      const propName = value
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]+(.)/g, (_, chr) => chr.toUpperCase());
+      content += `  ${propName}: '${value}',\n`;
+    });
+    content += `} as const;\n\n`;
+  }
+
+  return content;
+}
+
+// Get typescript type for a column, handling custom enum types
+function getTypeScriptType(
+  dataType: string,
+  isNullable: string,
+  columnDefault: string | null,
+  enumTypes: Map<string, string[]> = new Map()
+): string {
+  // Check if this is a custom enum type
+  if (enumTypes.has(dataType)) {
+    const typeName = snakeToPascalCase(dataType);
+    let tsType = typeName;
+
+    // Add nullable modifier if needed
+    if (isNullable === "YES") {
+      return `${tsType} | null`;
+    }
+    return tsType;
+  }
+
+  // Get the base type
+  let tsType = pgToTsTypeMap[dataType] || "any";
+
+  // Handle array types
+  if (dataType.endsWith("[]")) {
+    const baseType = dataType.slice(0, -2);
+    // Check if array of enum type
+    if (enumTypes.has(baseType)) {
+      const typeName = snakeToPascalCase(baseType);
+      tsType = `${typeName}[]`;
+    } else {
+      tsType = `${pgToTsTypeMap[baseType] || "any"}[]`;
+    }
+  }
+
+  // Add nullable modifier if needed
+  if (isNullable === "YES") {
+    return `${tsType} | null`;
+  }
+
+  // For NOT NULL columns with default values like CURRENT_TIMESTAMP or gen_random_uuid()
+  // we generally don't need to include them when inserting data
+  if (
+    columnDefault &&
+    (columnDefault.includes("CURRENT_TIMESTAMP") ||
+      columnDefault.includes("gen_random_uuid()"))
+  ) {
+    return `${tsType} | undefined`;
+  }
+
+  return tsType;
+}
+
+// Generate TypeScript interface for a table
+function generateTableInterface(
+  schemaName: string,
+  tableName: string,
+  columns: any[],
+  primaryKeys: string[],
+  enumTypes: Map<string, string[]>
+): string {
+  const interfaceName = `${snakeToPascalCase(tableName)}`;
+  let content = `export interface ${interfaceName} {\n`;
+
+  columns.forEach((column) => {
+    const tsType = getTypeScriptType(
+      column.data_type,
+      column.is_nullable,
+      column.column_default,
+      enumTypes
+    );
+    content += `  ${column.column_name}: ${tsType};\n`;
+  });
+
+  content += `}\n\n`;
+
+  // Primary key interface
+  if (primaryKeys.length > 0) {
+    content += `export interface ${interfaceName}Key {\n`;
+    primaryKeys.forEach((keyColumn) => {
+      // Find the column definition for this primary key
+      const column = columns.find((col) => col.column_name === keyColumn);
+      if (column) {
+        const tsType = getTypeScriptType(
+          column.data_type,
+          "NO",
+          column.column_default,
+          enumTypes
+        );
+        content += `  ${keyColumn}: ${tsType};\n`;
+      }
+    });
+    content += `}\n\n`;
+  }
+
+  // Create interface
+  content += `export interface Create${interfaceName} {\n`;
+  columns.forEach((column) => {
+    // Skip auto-generated columns or ones with defaults
+    const isAutoGenerated =
+      column.column_default &&
+      (column.column_default.includes("nextval") ||
+        column.column_default.includes("gen_random_uuid()") ||
+        column.column_default.includes("CURRENT_TIMESTAMP"));
+
+    if (isAutoGenerated) {
+      // Auto-generated columns are optional in creation
+      if (column.is_nullable === "NO") {
+        const tsType = getTypeScriptType(
+          column.data_type,
+          "YES",
+          column.column_default,
+          enumTypes
+        );
+        content += `  ${column.column_name}?: ${tsType};\n`;
+      }
+    } else if (column.is_nullable === "NO") {
+      // Required fields
+      const tsType = getTypeScriptType(
+        column.data_type,
+        "NO",
+        column.column_default,
+        enumTypes
+      );
+      content += `  ${column.column_name}: ${tsType};\n`;
+    } else {
+      // Optional fields
+      const tsType = getTypeScriptType(
+        column.data_type,
+        "YES",
+        column.column_default,
+        enumTypes
+      );
+      content += `  ${column.column_name}?: ${tsType};\n`;
+    }
+  });
+  content += `}\n\n`;
+
+  // Update interface
+  content += `export interface Update${interfaceName} {\n`;
+  columns.forEach((column) => {
+    // For update operations, all fields are optional
+    const tsType = getTypeScriptType(
+      column.data_type,
+      "YES",
+      column.column_default,
+      enumTypes
+    );
+    content += `  ${column.column_name}?: ${tsType};\n`;
+  });
+  content += `}\n`;
+
+  return content;
+}
+
+// Generate barrel file that exports all types
+function generateIndexFile(schemas: Record<string, string[]>): string {
+  let content = "// Auto-generated database type definitions\n\n";
+
+  for (const [schema, tables] of Object.entries(schemas)) {
+    for (const table of tables) {
+      const pascalTable = snakeToPascalCase(table);
+      content += `export * from "./${schema}/${table}";\n`;
+    }
+  }
+
+  return content;
+}
+
+async function generateDatabaseTypes(): Promise<void> {
+  try {
+    // Get a client from the pool
+    const client = await pool.connect();
+    const schemaMap: Record<string, string[]> = {};
+    const enumTypes: EnumType[] = [];
+    const enumTypeMap = new Map<string, string[]>();
+
+    try {
+      console.log("Generating TypeScript types from database schema...");
+      ensureDirectoryExists(TYPES_DIR);
+
+      // Get PostgreSQL enum types
+      console.log("Fetching enum types...");
+      const enumsResult = await client.query(`
+        SELECT 
+          t.typname AS enum_name,
+          e.enumlabel AS enum_value
+        FROM pg_type t
+        JOIN pg_enum e ON t.oid = e.enumtypid
+        JOIN pg_catalog.pg_namespace n ON n.oid = t.typnamespace
+        ORDER BY t.typname, e.enumsortorder;
+      `);
+
+      // Process enum types
+      if (enumsResult.rows.length > 0) {
+        const enumMap = new Map<string, string[]>();
+
+        enumsResult.rows.forEach((row) => {
+          if (!enumMap.has(row.enum_name)) {
+            enumMap.set(row.enum_name, []);
+          }
+          enumMap.get(row.enum_name)?.push(row.enum_value);
+        });
+
+        // Convert map to array of enum types
+        for (const [name, values] of enumMap.entries()) {
+          enumTypes.push({ name, values });
+          enumTypeMap.set(name, values);
+        }
+
+        // Write enum types to file
+        const enumsContent = generateEnumTypes(enumTypes);
+        if (enumsContent) {
+          fs.writeFileSync(
+            path.join(TYPES_DIR, "enums.ts"),
+            enumsContent,
+            "utf8"
+          );
+          console.log("Generated enum types");
+        }
+      }
+
+      // List all schemas
+      const schemas = await client.query(`
+        SELECT schema_name 
+        FROM information_schema.schemata 
+        WHERE schema_name NOT IN ('pg_catalog', 'information_schema', 'pg_toast')
+        ORDER BY schema_name;
+      `);
+
+      // Process each schema
+      for (const schema of schemas.rows) {
+        const schemaName = schema.schema_name;
+        console.log(`Processing schema: ${schemaName}`);
+
+        // Create a directory for this schema
+        const schemaDir = path.join(TYPES_DIR, schemaName);
+        ensureDirectoryExists(schemaDir);
+
+        schemaMap[schemaName] = [];
+
+        // Get tables in this schema
+        const tables = await client.query(
+          `
+          SELECT table_name 
+          FROM information_schema.tables 
+          WHERE table_schema = $1
+          ORDER BY table_name;
+        `,
+          [schemaName]
+        );
+
+        // Process each table
+        for (const table of tables.rows) {
+          const tableName = table.table_name;
+          console.log(`  Processing table: ${tableName}`);
+
+          schemaMap[schemaName].push(tableName);
+
+          // Get column information
+          const columns = await client.query(
+            `
+            SELECT 
+              column_name, 
+              data_type, 
+              is_nullable,
+              column_default
+            FROM information_schema.columns 
+            WHERE table_schema = $1 
+              AND table_name = $2
+            ORDER BY ordinal_position;
+          `,
+            [schemaName, tableName]
+          );
+
+          // Get primary key information
+          const primaryKeys = await client.query(
+            `
+            SELECT kcu.column_name
+            FROM information_schema.table_constraints tc
+            JOIN information_schema.key_column_usage kcu
+              ON tc.constraint_catalog = kcu.constraint_catalog
+              AND tc.constraint_schema = kcu.constraint_schema
+              AND tc.constraint_name = kcu.constraint_name
+            WHERE tc.constraint_type = 'PRIMARY KEY'
+              AND tc.table_schema = $1
+              AND tc.table_name = $2;
+          `,
+            [schemaName, tableName]
+          );
+
+          const primaryKeyColumns = primaryKeys.rows.map(
+            (row) => row.column_name
+          );
+
+          // Generate interface
+          const typeContent = generateTableInterface(
+            schemaName,
+            tableName,
+            columns.rows,
+            primaryKeyColumns,
+            enumTypeMap
+          );
+
+          // Write interface to file
+          fs.writeFileSync(
+            path.join(schemaDir, `${tableName}.ts`),
+            typeContent,
+            "utf8"
+          );
+        }
+      }
+
+      // Generate index.ts file that exports all types
+      let indexContent = "// Auto-generated database type definitions\n\n";
+
+      if (enumTypes.length > 0) {
+        indexContent += `export * from "./enums";\n`;
+      }
+
+      for (const [schema, tables] of Object.entries(schemaMap)) {
+        for (const table of tables) {
+          indexContent += `export * from "./${schema}/${table}";\n`;
+        }
+      }
+
+      fs.writeFileSync(path.join(TYPES_DIR, "index.ts"), indexContent, "utf8");
+
+      console.log(`\nTypes generated successfully in ${TYPES_DIR}`);
+    } finally {
+      // Release the client back to the pool
+      client.release();
+    }
+
+    // Close the pool
+    await pool.end();
+  } catch (error) {
+    console.error("Error generating database types:", error);
+    process.exit(1);
+  }
+}
+
+// Run the type generation
+generateDatabaseTypes();
