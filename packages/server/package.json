@@ -28,7 +28,8 @@
     "generate:resource": "bash ./generate-resource.sh",
     "db:reset": "",
     "db:migrate": "",
-    "db:generate": ""
+    "db:generate": "",
+    "setup-db": "node src/db/setup-db.js"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
