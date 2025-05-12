@@ -1,0 +1,56 @@
+.divider {
+  background-color: var(--border-color, rgba(0, 0, 0, 0.1));
+  display: flex;
+}
+
+/* Orientation variants */
+.horizontal {
+  width: 100%;
+  height: 1px;
+  margin: var(--space-4) 0;
+}
+
+.vertical {
+  height: 100%;
+  width: 1px;
+  margin: 0 var(--space-4);
+}
+
+/* Size variants */
+.thin {
+  opacity: 0.5;
+}
+
+.regular {
+  opacity: 0.75;
+}
+
+.thick {
+  opacity: 1;
+}
+
+/* For vertical divider in a flex container */
+.vertical.thin {
+  min-width: 1px;
+}
+
+.vertical.regular {
+  min-width: 1px;
+}
+
+.vertical.thick {
+  min-width: 2px;
+}
+
+/* For horizontal divider in a flex container */
+.horizontal.thin {
+  min-height: 1px;
+}
+
+.horizontal.regular {
+  min-height: 1px;
+}
+
+.horizontal.thick {
+  min-height: 2px;
+}
