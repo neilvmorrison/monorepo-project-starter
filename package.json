@@ -1,5 +1,5 @@
 {
-  "name": "pnpm-monorepo-starter",
+  "name": "taskmaster",
   "private": true,
   "version": "0.0.1",
   "scripts": {
