@@ -9,12 +9,10 @@ export interface ActionLogs {
   status: number | null;
 }
 
-export interface ActionLogsKey {
-  id: string | undefined;
-}
-
-export interface CreateActionLogs {
-  id?: string | null;
+export interface InsertActionLogs {
+  id?: string | undefined;
+  created_at?: Date | null;
+  updated_at?: Date | null;
   action?: string | null;
   auth_user_id?: string | null;
   url?: string | null;
@@ -23,7 +21,7 @@ export interface CreateActionLogs {
 }
 
 export interface UpdateActionLogs {
-  id?: string | null;
+  id?: string | undefined;
   created_at?: Date | null;
   updated_at?: Date | null;
   action?: string | null;
@@ -31,4 +29,10 @@ export interface UpdateActionLogs {
   url?: string | null;
   request_body?: Record<string, any> | null;
   status?: number | null;
+}
+
+export interface ActionLogsTable {
+  row: ActionLogs;
+  insert: InsertActionLogs;
+  update: UpdateActionLogs;
 }

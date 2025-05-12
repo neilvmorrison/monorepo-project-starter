@@ -84,38 +84,119 @@ function getTypeScriptType(
   return tsType;
 }
 
-// Generate TypeScript interface for a table
-function generateTableInterface(
+// Determine if a column is required for insert
+function isRequiredForInsert(column: any): boolean {
+  const isNullable = column.is_nullable === "YES";
+  const hasAutoDefault =
+    column.column_default &&
+    (column.column_default.includes("CURRENT_TIMESTAMP") ||
+      column.column_default.includes("gen_random_uuid()") ||
+      column.column_default.includes("nextval"));
+
+  return !isNullable && !hasAutoDefault;
+}
+
+// Generate TypeScript interfaces for a table
+function generateTableInterfaces(
   schemaName: string,
   tableName: string,
   columns: any[]
 ): string {
-  const interfaceName = `${snakeToPascalCase(tableName)}`;
-  let interfaceContent = `export interface ${interfaceName} {\n`;
+  const recordName = snakeToPascalCase(tableName);
+  let content = "";
 
+  // Generate base record interface
+  content += `export interface ${recordName} {\n`;
   columns.forEach((column) => {
     const tsType = getTypeScriptType(
       column.data_type,
       column.is_nullable,
       column.column_default
     );
-    interfaceContent += `  ${column.column_name}: ${tsType};\n`;
+    content += `  ${column.column_name}: ${tsType};\n`;
   });
+  content += `}\n\n`;
 
-  interfaceContent += `}\n`;
-  return interfaceContent;
+  // Generate Insert interface
+  content += `export interface Insert${recordName} {\n`;
+  columns.forEach((column) => {
+    const tsType = getTypeScriptType(
+      column.data_type,
+      column.is_nullable,
+      column.column_default
+    );
+
+    // For insert, make required fields mandatory and optional fields optional
+    const isRequired = isRequiredForInsert(column);
+    const optionalModifier = isRequired ? "" : "?";
+
+    content += `  ${column.column_name}${optionalModifier}: ${tsType};\n`;
+  });
+  content += `}\n\n`;
+
+  // Generate Update interface (all fields optional)
+  content += `export interface Update${recordName} {\n`;
+  columns.forEach((column) => {
+    const tsType = getTypeScriptType(
+      column.data_type,
+      column.is_nullable,
+      column.column_default
+    );
+    content += `  ${column.column_name}?: ${tsType};\n`;
+  });
+  content += `}\n\n`;
+
+  // Generate Table interface
+  content += `export interface ${recordName}Table {\n`;
+  content += `  row: ${recordName};\n`;
+  content += `  insert: Insert${recordName};\n`;
+  content += `  update: Update${recordName};\n`;
+  content += `}\n`;
+
+  return content;
 }
 
 // Generate barrel file that exports all types
 function generateIndexFile(schemas: Record<string, string[]>): string {
   let content = "// Auto-generated database type definitions\n\n";
 
+  // Import statements section
   for (const [schema, tables] of Object.entries(schemas)) {
     for (const table of tables) {
       const pascalTable = snakeToPascalCase(table);
-      content += `export * from "./${schema}/${table}";\n`;
+      content += `import { ${pascalTable}, Insert${pascalTable}, Update${pascalTable}, ${pascalTable}Table } from "./${schema}/${table}";\n`;
     }
   }
+
+  // Re-export all imported types
+  content += "\n// Re-export all types\n";
+  for (const [schema, tables] of Object.entries(schemas)) {
+    for (const table of tables) {
+      const pascalTable = snakeToPascalCase(table);
+      content += `export { ${pascalTable}, Insert${pascalTable}, Update${pascalTable}, ${pascalTable}Table };\n`;
+    }
+  }
+
+  // Generate Database interface
+  content += "\n// Database interface mapping all tables\n";
+  content += "export interface Database {\n";
+
+  // Add entries for each schema.table
+  for (const [schema, tables] of Object.entries(schemas)) {
+    for (const table of tables) {
+      const pascalTable = snakeToPascalCase(table);
+
+      // Add with schema.table format only for non-public schemas
+      if (schema !== "public") {
+        content += `  "${schema}.${table}": ${pascalTable}Table;\n`;
+      }
+
+      // Add table name for all tables
+      content += `  ${table}: ${pascalTable}Table;\n`;
+    }
+  }
+
+  content += "}\n";
 
   return content;
 }
@@ -183,8 +264,8 @@ async function generateDatabaseTypes(): Promise<void> {
             [schemaName, tableName]
           );
 
-          // Generate interface
-          const typeContent = generateTableInterface(
+          // Generate interfaces
+          const typeContent = generateTableInterfaces(
             schemaName,
             tableName,
             columns.rows

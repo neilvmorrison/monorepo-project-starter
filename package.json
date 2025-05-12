@@ -12,7 +12,10 @@
     "server:add": "pnpm --filter server add",
     "client:add": "pnpm --filter web-client add",
     "ds:add": "pnpm --filter design-system add",
-    "ds:build": "pnpm --filter design-system build"
+    "ds:build": "pnpm --filter design-system build",
+    "server": "pnpm --filter server",
+    "client": "pnpm --filter web-client",
+    "ds": "pnpm --filter design-system"
   },
   "devDependencies": {
     "typescript": "^5.0.0"

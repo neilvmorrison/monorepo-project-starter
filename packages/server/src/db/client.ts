@@ -4,11 +4,11 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const pool = new Pool({
-  database: process.env.DATABASE_NAME || "taskmaster",
-  host: process.env.DATABASE_HOST || "localhost",
-  user: process.env.DATABASE_USER || "neilmorrison",
-  port: parseInt(process.env.DATABASE_PORT || "5432"),
-  max: parseInt(process.env.DATABASE_MAX_CONNECTIONS || "10"),
+  database: process.env.DATABASE_NAME,
+  host: process.env.DATABASE_HOST,
+  user: process.env.DATABASE_USER,
+  port: parseInt(process.env.DATABASE_PORT!),
+  max: parseInt(process.env.DATABASE_MAX_CONNECTIONS!),
 });
 
 pool.on("error", (err, client) => {
